@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Efatharc Workspace",
     description: "Hey! Check out my interactive radial timeline project. Built with Next.js, TypeScript, and Tailwind CSS.",
-    url: "https://efatha.vercel.app", // Change to your actual Vercel URL once live
+    url: "https://efatha.vercel.app", 
     siteName: "Efatharc",
     images: [
       {
-        url: "/efatha.jpg", // Kept consistent
+        url: "/efatha.jpg",
         width: 1200,
         height: 630,
         alt: "Efatharc Interactive Timeline Preview",
@@ -29,6 +29,19 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Efatharc Workspace",
     description: "An interactive orbital timeline canvas engineered by YourName.",
-    images: ["/efatha.jpg"], // Kept consistent
+    images: ["/efatha.jpg"],
   },
 };
+
+// CRITICAL: Next.js needs this layout component to render your pages!
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="antialiased">{children}</body>
+    </html>
+  );
+}

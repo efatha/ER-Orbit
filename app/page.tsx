@@ -1,7 +1,12 @@
 "use client";
 
 import { Calendar, Code, FileText, User, Clock } from "lucide-react";
-import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
+import dynamic from "next/dynamic";
+
+const RadialOrbitalTimeline = dynamic(
+  () => import("@/components/ui/radial-orbital-timeline"),
+  { ssr: false }
+);
 
 const timelineData = [
   {

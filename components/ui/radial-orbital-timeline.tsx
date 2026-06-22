@@ -44,6 +44,27 @@ export default function RadialOrbitalTimeline({
     }
   };
 
+  const getRelatedItems = (itemId: number): number[] => {
+    const currentItem = timelineData.find((item) => item.id === itemId);
+    return currentItem ? currentItem.relatedIds : [];
+  };
+
+  const isRelatedToActive = (itemId: number): boolean => {
+    if (!activeNodeId) return false;
+    const relatedItems = getRelatedItems(activeNodeId);
+    return relatedItems.includes(itemId);
+  };
+
+  const centerViewOnNode = (nodeId: number) => {
+    if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
+
+    const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
+    const totalNodes = timelineData.length;
+    const targetAngle = (nodeIndex / totalNodes) * 360;
+
+    setRotationAngle(270 - targetAngle);
+  };
+
   const toggleItem = (id: number) => {
     setExpandedItems((prev) => {
       const newState = { ...prev };
@@ -95,42 +116,23 @@ export default function RadialOrbitalTimeline({
     };
   }, [autoRotate, viewMode]);
 
-  const centerViewOnNode = (nodeId: number) => {
-    if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
-
-    const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
-    const totalNodes = timelineData.length;
-    const targetAngle = (nodeIndex / totalNodes) * 360;
-
-    setRotationAngle(270 - targetAngle);
-  };
-
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
     const radius = 200;
     const radian = (angle * Math.PI) / 180;
 
-    const x = radius * Math.cos(radian) + centerOffset.x;
-    const y = radius * Math.sin(radian) + centerOffset.y;
-
+    const x = Number((radius * Math.cos(radian) + centerOffset.x).toFixed(3));
+    const y = Number((radius * Math.sin(radian) + centerOffset.y).toFixed(3));
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
-    const opacity = Math.max(
-      0.4,
-      Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2))
+
+    const opacity = Number(
+      Math.max(
+        0.4,
+        Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2))
+      ).toFixed(3)
     );
 
     return { x, y, angle, zIndex, opacity };
-  };
-
-  const getRelatedItems = (itemId: number): number[] => {
-    const currentItem = timelineData.find((item) => item.id === itemId);
-    return currentItem ? currentItem.relatedIds : [];
-  };
-
-  const isRelatedToActive = (itemId: number): boolean => {
-    if (!activeNodeId) return false;
-    const relatedItems = getRelatedItems(activeNodeId);
-    return relatedItems.includes(itemId);
   };
 
   const getStatusStyles = (status: TimelineItem["status"]): string => {
@@ -181,14 +183,16 @@ export default function RadialOrbitalTimeline({
 
             const nodeStyle = {
               transform: `translate(${position.x}px, ${position.y}px)`,
-              zIndex: isExpanded ? 200 : position.zIndex,
-              opacity: isExpanded ? 1 : position.opacity,
+              zIndex: Number(isExpanded ? 200 : position.zIndex),
+              opacity: Number(isExpanded ? 1 : position.opacity),
             };
 
             return (
               <div
                 key={item.id}
-                ref={(el) => { nodeRefs.current[item.id] = el; }}
+                ref={(el) => {
+                  nodeRefs.current[item.id] = el;
+                }}
                 className="absolute transition-all duration-700 cursor-pointer"
                 style={nodeStyle}
                 onClick={(e) => {

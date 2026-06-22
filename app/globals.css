@@ -2,18 +2,14 @@
 
 /* Animation for the pulsing effect */
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 1.5; }
 }
 
 /* Animation for the ping effect */
 @keyframes ping {
   75%, 100% {
-    transform: scale(2);
+    transform: scale(2.5);
     opacity: 0;
   }
 }
@@ -24,30 +20,24 @@
 }
 
 .animate-ping {
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Transitions */
+/* Transitions - optimized for hardware acceleration */
 .transition-all {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity; /* Hints the browser to use GPU for smoother rendering */
 }
 
-.duration-300 {
-  transition-duration: 300ms;
-}
+.duration-300 { transition-duration: 300ms; }
+.duration-700 { transition-duration: 700ms; }
+.duration-1000 { transition-duration: 1000ms; }
 
-.duration-700 {
-  transition-duration: 700ms;
-}
-
-.duration-1000 {
-  transition-duration: 1000ms;
-}
-
-/* Backdrop blur */
+/* Backdrop blur with performance-friendly mobile fallback */
 .backdrop-blur-lg {
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* Required for Safari on iPhones */
 }
 
 /* Custom gradients */
@@ -56,72 +46,64 @@
 }
 
 /* Z-index utilities */
-.z-10 {
-  z-index: 10;
-}
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
 
-.z-50 {
-  z-index: 50;
-}
-
-/* Custom shadows */
+/* Custom shadows - softened for tiny mobile displays */
 .shadow-orbital {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
 }
 
-/* Custom transforms */
-.scale-125 {
-  transform: scale(1.25);
-}
+/* Custom transforms with responsive safety caps */
+.scale-125 { transform: scale(1.15); } /* Scaled down for mobile bounds */
+.scale-150 { transform: scale(1.25); } /* Capped so elements do not break out of screen edges */
 
-.scale-150 {
-  transform: scale(1.5);
+/* Desktop layout restoration via Media Queries */
+@media (min-width: 768px) {
+  @keyframes pingDesktop {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  .animate-ping { animation: pingDesktop 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .scale-125 { transform: scale(1.25); }
+  .scale-150 { transform: scale(1.5); }
 }
 
 /* Custom opacity values */
-.opacity-70 {
-  opacity: 0.7;
-}
-
-.opacity-50 {
-  opacity: 0.5;
-}
+.opacity-70 { opacity: 0.7; }
+.opacity-50 { opacity: 0.5; }
 
 /* Custom border opacity */
-.border-white\/10 {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.border-white\/20 {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.border-white\/30 {
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.border-white\/40 {
-  border-color: rgba(255, 255, 255, 0.4);
-}
+.border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+.border-white\/20 { border-color: rgba(255, 255, 255, 0.2); }
+.border-white\/30 { border-color: rgba(255, 255, 255, 0.3); }
+.border-white\/40 { border-color: rgba(255, 255, 255, 0.4); }
 
 /* Custom background opacity */
-.bg-black\/90 {
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-.bg-white\/50 {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.bg-white\/80 {
-  background-color: rgba(255, 255, 255, 0.8);
-}
+.bg-black\/90 { background-color: rgba(0, 0, 0, 0.9); }
+.bg-white\/50 { background-color: rgba(255, 255, 255, 0.5); }
+.bg-white\/80 { background-color: rgba(255, 255, 255, 0.8); }
 
 /* Custom text opacity */
-.text-white\/70 {
-  color: rgba(255, 255, 255, 0.7);
-}
+.text-white\/70 { color: rgba(255, 255, 255, 0.7); }
+.text-white\/80 { color: rgba(255, 255, 255, 0.8); }
 
-.text-white\/80 {
-  color: rgba(255, 255, 255, 0.8);
+/* Mobile-only layout controller for active radar state */
+@media (max-width: 767px) {
+  /* Hides elements gracefully when the body tag is flagged with .radar-focused */
+  body.radar-focused .firstGrid,
+  body.radar-focused .secondGrid,
+  body.radar-focused h4:has(+ p + .efa-grey) { 
+    display: none !important;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Global mobile fluid typography baseline fix */
+  html, body {
+    overflow-x: hidden; /* Drastically stops broken viewport bouncing on horizontal swipes */
+    width: 100%;
+  }
 }

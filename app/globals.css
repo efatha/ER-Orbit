@@ -56,7 +56,7 @@
 
 /* Custom transforms with responsive safety caps */
 .scale-125 { transform: scale(1.15); } /* Scaled down for mobile bounds */
-.scale-150 { transform: scale(1.25); } /* Capped so elements do not break out of screen edges */
+.scale-150 { transform: scale(0.94); } /* Capped so elements do not break out of screen edges */
 
 /* Desktop layout restoration via Media Queries */
 @media (min-width: 768px) {
@@ -76,12 +76,14 @@
 .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
 .border-white\/20 { border-color: rgba(255, 255, 255, 0.2); }
 .border-white\/30 { border-color: rgba(255, 255, 255, 0.3); }
-.border-white\/40 { border-color: rgba(255, 255, 255, 0.4); }
+.border-cyan\/40 { border-color: rgba(0, 188, 212, 0.9); }
 
 /* Custom background opacity */
 .bg-black\/90 { background-color: rgba(0, 0, 0, 0.9); }
 .bg-white\/50 { background-color: rgba(255, 255, 255, 0.5); }
-.bg-white\/80 { background-color: rgba(255, 255, 255, 0.8); }
+.bg-white\/80 { background-color: rgba(253, 245, 230, 0.9); }
+.bg-cyan\/40 { background-color: rgba(0, 188, 212, 0.9); }
+
 
 /* Custom text opacity */
 .text-white\/70 { color: rgba(255, 255, 255, 0.7); }

@@ -17,7 +17,7 @@ const timelineData = [
     category: "Planning",
     icon: Calendar,
     relatedIds: [2],
-    status: "completed" as const,
+    status: "pending" as const,
     energy: 100,
   },
   {
